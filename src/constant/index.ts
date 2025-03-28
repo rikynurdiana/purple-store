@@ -12,8 +12,8 @@ export type TAB_TYPE =
 
 export const TAB_ICONS: Record<TAB_TYPE, any> = {
   [HOME_SCREEN]: require('@/assets/icons/home.png'),
-  [CART_SCREEN]: require('@/assets/icons/love.png'),
-  [FAVORITE_SCREEN]: require('@/assets/icons/cart.png'),
+  [FAVORITE_SCREEN]: require('@/assets/icons/love.png'),
+  [CART_SCREEN]: require('@/assets/icons/cart.png'),
   [PROFILE_SCREEN]: require('@/assets/icons/profile.png'),
 };
 

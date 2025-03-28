@@ -4,9 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '@/screens/HomeScreen';
 import ProductDetailScreen from '@/screens/ProductDetailScreen';
+import FavoriteScreen from '@/screens/FavoriteScreen';
 import {CartProvider} from '@/context/CartContext';
 import {FavoriteProvider} from '@/context/FavoriteContext';
-import {HOME_SCREEN, PRODUCT_DETAIL_SCREEN} from '@/constant';
+import {HOME_SCREEN, PRODUCT_DETAIL_SCREEN, FAVORITE_SCREEN} from '@/constant';
 
 const Stack = createStackNavigator();
 
@@ -22,8 +23,9 @@ function App(): React.JSX.Element {
             <Stack.Screen name={HOME_SCREEN} component={HomeScreen} />
             <Stack.Screen
               name={PRODUCT_DETAIL_SCREEN}
-              component={ProductDetailScreen as any}
+              component={ProductDetailScreen as React.ComponentType<any>}
             />
+            <Stack.Screen name={FAVORITE_SCREEN} component={FavoriteScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </CartProvider>
