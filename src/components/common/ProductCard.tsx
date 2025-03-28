@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {memo, useCallback} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Rating} from '@/components/common/Rating';
+import Rating from '@/components/common/Rating';
 import {PRODUCT_DETAIL_SCREEN} from '@/constant';
 import type {NavigationProps} from '@/types';
 
@@ -26,57 +26,55 @@ type ProductCardProps = {
   isLiked?: boolean;
 };
 
-export const ProductCard = React.memo(
-  ({
-    id,
-    name,
-    price,
-    discount = 0,
-    rating = 0,
-    image,
-    isLiked,
-  }: ProductCardProps) => {
-    const navigation = useNavigation<NavigationProps>();
+function ProductCard({
+  id,
+  name,
+  price,
+  discount = 0,
+  rating = 0,
+  image,
+  isLiked,
+}: ProductCardProps) {
+  const navigation = useNavigation<NavigationProps>();
 
-    const handlePress = useCallback(() => {
-      navigation.navigate(PRODUCT_DETAIL_SCREEN, {productId: id});
-    }, [id, navigation]);
+  const handlePress = useCallback(() => {
+    navigation.navigate(PRODUCT_DETAIL_SCREEN, {productId: id});
+  }, [id, navigation]);
 
-    return (
-      <Pressable
-        style={styles.card}
-        onPress={handlePress}
-        accessibilityRole="button">
-        {isLiked && (
-          <View style={styles.favoriteBadge}>
-            <Image
-              source={require('@/assets/icons/like.png')}
-              style={styles.favoriteIcon}
-            />
-          </View>
-        )}
-        <Image
-          source={{uri: image}}
-          style={styles.image}
-          resizeMode="cover"
-          defaultSource={require('@/assets/icons/photo.png')}
-        />
-        <View style={styles.content}>
-          <Text style={styles.name} numberOfLines={2}>
-            {name}
-          </Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.price}>${price.toLocaleString('en-US')}</Text>
-            {Math.round(discount) > 0 && (
-              <Text style={styles.discount}>{Math.round(discount)}% OFF</Text>
-            )}
-          </View>
-          <Rating value={rating} />
+  return (
+    <Pressable
+      style={styles.card}
+      onPress={handlePress}
+      accessibilityRole="button">
+      {isLiked && (
+        <View style={styles.favoriteBadge}>
+          <Image
+            source={require('@/assets/icons/like.png')}
+            style={styles.favoriteIcon}
+          />
         </View>
-      </Pressable>
-    );
-  },
-);
+      )}
+      <Image
+        source={{uri: image}}
+        style={styles.image}
+        resizeMode="cover"
+        defaultSource={require('@/assets/icons/photo.png')}
+      />
+      <View style={styles.content}>
+        <Text style={styles.name} numberOfLines={2}>
+          {name}
+        </Text>
+        <View style={styles.priceContainer}>
+          <Text style={styles.price}>${price.toLocaleString('en-US')}</Text>
+          {Math.round(discount) > 0 && (
+            <Text style={styles.discount}>{Math.round(discount)}% OFF</Text>
+          )}
+        </View>
+        <Rating value={rating} />
+      </View>
+    </Pressable>
+  );
+}
 
 const styles = StyleSheet.create({
   card: {
@@ -148,3 +146,5 @@ const styles = StyleSheet.create({
     tintColor: '#FFF',
   },
 });
+
+export default memo(ProductCard);

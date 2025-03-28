@@ -17,57 +17,55 @@ type BottomNavigationProps = {
 
 const TABS = Object.keys(TAB_ICONS) as TAB_TYPE[];
 
-export const BottomNavigation = memo(
-  ({activeTab, onTabPress}: BottomNavigationProps) => {
-    const navigation = useNavigation<any>();
+function BottomNavigation({activeTab, onTabPress}: BottomNavigationProps) {
+  const navigation = useNavigation<any>();
 
-    const handlePress = useCallback(
-      (tabName: TAB_TYPE) => {
-        if (tabName === HOME_SCREEN) {
-          navigation.navigate(HOME_SCREEN);
-          return;
-        }
-        if (tabName === FAVORITE_SCREEN) {
-          navigation.navigate(FAVORITE_SCREEN);
-          return;
-        }
-        if (tabName === CART_SCREEN) {
-          navigation.navigate(CART_SCREEN);
-          return;
-        }
-        if (tabName === PROFILE_SCREEN) {
-          navigation.navigate(PROFILE_SCREEN);
-          return;
-        }
-        onTabPress(tabName);
-      },
-      [onTabPress, navigation],
-    );
+  const handlePress = useCallback(
+    (tabName: TAB_TYPE) => {
+      if (tabName === HOME_SCREEN) {
+        navigation.navigate(HOME_SCREEN);
+        return;
+      }
+      if (tabName === FAVORITE_SCREEN) {
+        navigation.navigate(FAVORITE_SCREEN);
+        return;
+      }
+      if (tabName === CART_SCREEN) {
+        navigation.navigate(CART_SCREEN);
+        return;
+      }
+      if (tabName === PROFILE_SCREEN) {
+        navigation.navigate(PROFILE_SCREEN);
+        return;
+      }
+      onTabPress(tabName);
+    },
+    [onTabPress, navigation],
+  );
 
-    return (
-      <View style={styles.bottomNav}>
-        {TABS.map(tabName => (
-          <Pressable
-            key={tabName}
-            onPress={() => handlePress(tabName)}
-            style={({pressed}) => [
-              styles.tabItem,
-              activeTab === tabName && styles.activeTabItem,
-              pressed && styles.pressedTabItem,
-            ]}
-            accessibilityRole="button"
-            accessibilityState={{selected: activeTab === tabName}}>
-            <Image
-              source={TAB_ICONS[tabName]}
-              style={styles.tabIcon}
-              accessibilityIgnoresInvertColors
-            />
-          </Pressable>
-        ))}
-      </View>
-    );
-  },
-);
+  return (
+    <View style={styles.bottomNav}>
+      {TABS.map(tabName => (
+        <Pressable
+          key={tabName}
+          onPress={() => handlePress(tabName)}
+          style={({pressed}) => [
+            styles.tabItem,
+            activeTab === tabName && styles.activeTabItem,
+            pressed && styles.pressedTabItem,
+          ]}
+          accessibilityRole="button"
+          accessibilityState={{selected: activeTab === tabName}}>
+          <Image
+            source={TAB_ICONS[tabName]}
+            style={styles.tabIcon}
+            accessibilityIgnoresInvertColors
+          />
+        </Pressable>
+      ))}
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   bottomNav: {
@@ -101,3 +99,5 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
+
+export default memo(BottomNavigation);

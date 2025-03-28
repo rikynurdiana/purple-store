@@ -1,18 +1,23 @@
-import {NavigationProp, RouteProp} from '@react-navigation/native';
-
-export type RootStackParamList = {
-  Home: undefined;
-  ProductDetail: {productId: number};
-  Cart: undefined;
-  LikeScreen: undefined;
-  ProfileScreen: undefined;
-};
+import {NavigationProp} from '@react-navigation/native';
+import {
+  HOME_SCREEN,
+  PRODUCT_DETAIL_SCREEN,
+  CART_SCREEN,
+  FAVORITE_SCREEN,
+  PROFILE_SCREEN,
+  ADD_FAVORITE,
+  REMOVE_FAVORITE,
+} from '@/constant';
 
 export type NavigationProps = NavigationProp<RootStackParamList>;
-export type ProductDetailRouteProp = RouteProp<
-  RootStackParamList,
-  'ProductDetail'
->;
+
+export type RootStackParamList = {
+  [HOME_SCREEN]: undefined;
+  [PRODUCT_DETAIL_SCREEN]: {productId: number};
+  [CART_SCREEN]: undefined;
+  [FAVORITE_SCREEN]: undefined;
+  [PROFILE_SCREEN]: undefined;
+};
 
 export type Category = {
   slug: string;
@@ -62,3 +67,16 @@ export interface ProductDetail extends Product {
   returnPolicy: string;
   minimumOrderQuantity: number;
 }
+
+export type FavoriteAction =
+  | {type: typeof ADD_FAVORITE; product: ProductDetail}
+  | {type: typeof REMOVE_FAVORITE; product: ProductDetail};
+
+export type CartItem = {
+  id: number;
+  title: string;
+  price: number;
+  thumbnail: string;
+  quantity: number;
+  isSelected: boolean;
+};

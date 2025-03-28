@@ -8,51 +8,49 @@ type SearchBarProps = {
   setSelectedCategory?: any;
 };
 
-export const SearchBar = memo(
-  ({
-    value,
-    onChangeText,
-    selectedCategory,
-    setSelectedCategory,
-  }: SearchBarProps) => {
-    const handleTextChange = useCallback(
-      (text: string) => {
-        onChangeText(text);
-        setSelectedCategory('');
-      },
-      [onChangeText, setSelectedCategory],
-    );
+function SearchBar({
+  value,
+  onChangeText,
+  selectedCategory,
+  setSelectedCategory,
+}: SearchBarProps) {
+  const handleTextChange = useCallback(
+    (text: string) => {
+      onChangeText(text);
+      setSelectedCategory('');
+    },
+    [onChangeText, setSelectedCategory],
+  );
 
-    useEffect(() => {
-      if (selectedCategory) {
-        onChangeText('');
-      }
-    }, [selectedCategory, onChangeText]);
+  useEffect(() => {
+    if (selectedCategory) {
+      onChangeText('');
+    }
+  }, [selectedCategory, onChangeText]);
 
-    return (
-      <View style={styles.container}>
-        <Image
-          source={require('@/assets/icons/search.png')}
-          style={styles.filterIcon}
-          accessibilityIgnoresInvertColors
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Search products..."
-          placeholderTextColor="#666666"
-          value={value}
-          onChangeText={handleTextChange}
-          accessibilityLabel="Search products input"
-          accessibilityHint="Type product name or category"
-          clearButtonMode="while-editing"
-          returnKeyType="search"
-          autoCorrect={false}
-          autoCapitalize="none"
-        />
-      </View>
-    );
-  },
-);
+  return (
+    <View style={styles.container}>
+      <Image
+        source={require('@/assets/icons/search.png')}
+        style={styles.filterIcon}
+        accessibilityIgnoresInvertColors
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Search products..."
+        placeholderTextColor="#666666"
+        value={value}
+        onChangeText={handleTextChange}
+        accessibilityLabel="Search products input"
+        accessibilityHint="Type product name or category"
+        clearButtonMode="while-editing"
+        returnKeyType="search"
+        autoCorrect={false}
+        autoCapitalize="none"
+      />
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -79,3 +77,5 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
+
+export default memo(SearchBar);

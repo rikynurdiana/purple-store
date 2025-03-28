@@ -1,3 +1,4 @@
+import {memo} from 'react';
 import {
   Dimensions,
   Image,
@@ -12,10 +13,7 @@ type TopCategoryProps = {
   categories: {name: string}[];
 };
 
-export default function TopCategory({
-  handleCategoryChange,
-  categories,
-}: TopCategoryProps) {
+function TopCategory({handleCategoryChange, categories}: TopCategoryProps) {
   const getTabIcon = (tabName: string) => {
     switch (tabName.toLowerCase()) {
       case 'laptops':
@@ -99,3 +97,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default memo(TopCategory);
