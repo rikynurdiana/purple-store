@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useRef, useEffect, memo} from 'react';
 import {
   View,
   StyleSheet,
@@ -9,19 +9,17 @@ import {
   Image,
   ActivityIndicator,
   ImageBackground,
+  Text,
 } from 'react-native';
-import {ProductCard} from '@/components/common/ProductCard';
-import {BottomNavigation} from '@/components/navigation/BottomNavigation';
-import {Categories} from '@/components/home/Categories';
-import {SearchBar} from '@/components/home/SearchBar';
-import {Text} from 'react-native';
-
-import type {Category, FormattedProduct, Product} from '@/types';
-
-import useDebounce from '@/utils/useDebounce';
+import ProductCard from '@/components/common/ProductCard';
+import BottomNavigation from '@/components/navigation/BottomNavigation';
+import Categories from '@/components/home/Categories';
+import SearchBar from '@/components/home/SearchBar';
 import ImageSlide from '@/components/common/ImageSlide';
-import {HOME_SCREEN, HOME_SLIDER} from '@/constant';
 import TopCategory from '@/components/home/TopCategory';
+import useDebounce from '@/utils/useDebounce';
+import {HOME_SCREEN, HOME_SLIDER} from '@/constant';
+import type {Category, FormattedProduct, Product} from '@/types';
 
 function HomeScreen() {
   const [activeTab, setActiveTab] = useState(HOME_SCREEN);
@@ -101,7 +99,6 @@ function HomeScreen() {
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
-      // If search is cleared, don't do anything as category handler will take over
       return;
     }
 
@@ -370,4 +367,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(HomeScreen);
+export default memo(HomeScreen);

@@ -1,4 +1,4 @@
-import React, {useRef, useCallback, useMemo} from 'react';
+import React, {useRef, useCallback, useMemo, memo} from 'react';
 import {ScrollView, TouchableOpacity, Text, StyleSheet} from 'react-native';
 
 type CategoriesProps = {
@@ -7,7 +7,7 @@ type CategoriesProps = {
   onSelectCategory: (index: number) => void;
 };
 
-export function Categories({
+function Categories({
   categories,
   selectedCategory,
   onSelectCategory,
@@ -104,3 +104,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default memo(Categories);

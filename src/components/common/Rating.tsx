@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {View, StyleSheet, Image, Platform} from 'react-native';
 
 const STAR_COUNT = 5;
@@ -7,7 +7,7 @@ const STAR_ICONS = [
   require('@/assets/icons/star-empty.png'),
 ];
 
-export const Rating = ({value}: {value: number}) => {
+function Rating({value}: {value: number}) {
   const roundedValue = Math.round(value);
 
   const stars = useMemo(
@@ -24,7 +24,7 @@ export const Rating = ({value}: {value: number}) => {
   );
 
   return <View style={styles.container}>{stars}</View>;
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -43,3 +43,5 @@ const styles = StyleSheet.create({
     }),
   },
 });
+
+export default memo(Rating);
