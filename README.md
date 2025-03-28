@@ -1,97 +1,77 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Purple Store
 
-# Getting Started
+Purple Store is mobile e-commerce apps. Cooked by React Native CLI. This project just for showcase and add to my portfolio. If you guys want to contribute or want to continue develop this apps, you can fork this project.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Feature
 
-## Step 1: Start Metro
+- Home Page
+  - List Product
+  - List Product Category
+  - Search Product
+- Detail Product
+  - Detail product description
+  - Like / Favorite Product
+  - Add to cart
+- Favorite
+  - List of all faavorite product
+- Cart
+  - List of all prodcut that has been add
+  - Add quantity selected product
+  - Remove product from cart
+- Checkout
+  - List Product to pay
+  - Payment method
+  - Notification payment success / failed
+  - Update cart after product payment
+- Profile
+  - Show user profile
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## How to start develop
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+1 . After clone this project you must generate release-key.keystore
 
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+```
+keytool -genkeypair -v -storetype PKCS12 -keystore release-key.keystore -alias purple-key -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-## Step 2: Build and run your app
+2 . After generate keystore you must create file .env
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+the password is when you generate `keytool`
 
-### Android
+```
+PURPLE_STORE_PASSWORD=******
+PURPLE_KEY_PASSWORD=******
+```
 
-```sh
-# Using npm
+3 . Install Dependencies
+
+```
+npm Install
+```
+
+4 . Start develop
+
+after you open the emulator then
+
+```
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
+## How build APK
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+Open folder android and type `gradlew clean && gradlew assembleRelease`
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+## Where is the APK file
 
-```sh
-bundle install
+APK file is in folder `android/app/build/outputs/apk`
+
+The folder will contain separated APK
+
+```
+app-arm64-v8a-release.apk
+app-armeabi-v7a-release.apk
+app-x86_64-release.apk
+app-x86-release.apk
 ```
 
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+you can use by your device spec

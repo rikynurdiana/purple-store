@@ -72,6 +72,8 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
+def enableSeparateBuildPerCPUArchitecture = true
+
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -86,6 +88,12 @@ android {
         versionName "1.0"
         resConfigs "en", "in"
         resConfigs "xhdpi"
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_STL=c++_shared"
+                arguments "-DMAXIMUM_PATH_LENGTH=512"
+            }
+        }
     }
     signingConfigs {
         debug {
