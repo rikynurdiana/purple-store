@@ -5,6 +5,7 @@ import {
   CART_SCREEN,
   FAVORITE_SCREEN,
   PROFILE_SCREEN,
+  PAYMENT_SCREEN,
   ADD_FAVORITE,
   REMOVE_FAVORITE,
 } from '@/constant';
@@ -17,6 +18,7 @@ export type RootStackParamList = {
   [CART_SCREEN]: undefined;
   [FAVORITE_SCREEN]: undefined;
   [PROFILE_SCREEN]: undefined;
+  [PAYMENT_SCREEN]: undefined;
 };
 
 export type Category = {

@@ -3,6 +3,7 @@ export const PRODUCT_DETAIL_SCREEN = 'ProductDetailScreen';
 export const CART_SCREEN = 'CartScreen';
 export const FAVORITE_SCREEN = 'FavoriteScreen';
 export const PROFILE_SCREEN = 'ProfileScreen';
+export const PAYMENT_SCREEN = 'PaymentScreen';
 
 export type TAB_TYPE =
   | typeof HOME_SCREEN
