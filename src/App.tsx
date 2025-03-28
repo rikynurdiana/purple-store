@@ -7,6 +7,7 @@ import ProductDetailScreen from '@/screens/ProductDetailScreen';
 import FavoriteScreen from '@/screens/FavoriteScreen';
 import CartScreen from '@/screens/CartScreen';
 import PaymentScreen from '@/screens/PaymentScreen';
+import ProfileScreen from '@/screens/ProfileScreen';
 import {CartProvider} from '@/context/CartContext';
 import {FavoriteProvider} from '@/context/FavoriteContext';
 import {
@@ -15,6 +16,7 @@ import {
   FAVORITE_SCREEN,
   CART_SCREEN,
   PAYMENT_SCREEN,
+  PROFILE_SCREEN,
 } from '@/constant';
 
 const Stack = createStackNavigator();
@@ -36,6 +38,7 @@ function App(): React.JSX.Element {
             <Stack.Screen name={FAVORITE_SCREEN} component={FavoriteScreen} />
             <Stack.Screen name={CART_SCREEN} component={CartScreen} />
             <Stack.Screen name={PAYMENT_SCREEN} component={PaymentScreen} />
+            <Stack.Screen name={PROFILE_SCREEN} component={ProfileScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </CartProvider>
