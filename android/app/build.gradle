@@ -84,6 +84,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        resConfigs "en", "in"
+        resConfigs "xhdpi"
     }
     signingConfigs {
         debug {
@@ -91,6 +93,14 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        release {
+            if (project.hasProperty('PURPLE_RELEASE_STORE_FILE')) {
+                storeFile file(PURPLE_RELEASE_STORE_FILE)
+                storePassword PURPLE_RELEASE_STORE_PASSWORD
+                keyAlias PURPLE_RELEASE_KEY_ALIAS
+                keyPassword PURPLE_RELEASE_KEY_PASSWORD
+            }
         }
     }
     buildTypes {
@@ -101,8 +111,26 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
-            minifyEnabled enableProguardInReleaseBuilds
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            
+        }
+    }
+    packagingOptions {
+        pickFirst "**/libreactnativejni.so"
+        exclude "**/libjsc*.so"
+        exclude "**/libhermes*.so"
+    }
+    buildFeatures {
+        buildConfig true
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
+            universalApk false
         }
     }
 }
@@ -117,3 +145,11 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+project.ext.react = [
+    enableHermes: true,
+    bundleInRelease: true,
+    bundleInDebug: false,
+    devDisabledInRelease: true,
+    productionEnabled: true,
+]
