@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,25 +6,20 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  SafeAreaView,
-  Platform,
-  StatusBar,
   Alert,
 } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import BottomNavigation from '@/components/navigation/BottomNavigation';
 import {useCart} from '@/context/CartContext';
-import {CART_SCREEN, PAYMENT_SCREEN, PRODUCT_DETAIL_SCREEN} from '@/constant';
-import type {RootStackParamList, CartItem} from '@/types';
+import {MAIN_TAB, PAYMENT_SCREEN, PRODUCT_DETAIL_SCREEN} from '@/constant';
+import type {CartItem, RootStackParamList} from '@/types';
 
 type CartScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, typeof CART_SCREEN>;
+  navigation: StackNavigationProp<RootStackParamList, typeof MAIN_TAB>;
 };
 
 function CartScreen({navigation}: CartScreenProps) {
   const {cartItems, removeFromCart, updateQuantity, toggleSelect, selectAll} =
     useCart();
-  const [activeTab, setActiveTab] = useState(CART_SCREEN);
 
   const calculateTotal = () => {
     return cartItems
@@ -65,7 +60,9 @@ function CartScreen({navigation}: CartScreenProps) {
       </TouchableOpacity>
       <View style={styles.itemDetails}>
         <Text style={styles.itemName}>{item.title}</Text>
-        <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
+        <Text style={styles.itemPrice}>
+          ${item.price.toLocaleString('en-US')}
+        </Text>
 
         <View style={styles.quantityContainer}>
           <TouchableOpacity
@@ -99,76 +96,65 @@ function CartScreen({navigation}: CartScreenProps) {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.screenTitle}>Shopping Cart</Text>
-          {cartItems.length > 0 && (
-            <TouchableOpacity
-              onPress={() =>
-                selectAll(!cartItems.every(item => item.isSelected))
-              }
-              style={styles.selectAllButton}>
-              <Text style={styles.selectAllText}>
-                {cartItems.every(item => item.isSelected)
-                  ? 'Deselect All'
-                  : 'Select All'}
-              </Text>
-            </TouchableOpacity>
-          )}
-        </View>
-
-        {cartItems.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Image
-              source={require('@/assets/images/empty-cart.png')}
-              style={styles.emptyImage}
-            />
-            <Text style={styles.emptyText}>Your cart feels lonely</Text>
-          </View>
-        ) : (
-          <>
-            <FlatList
-              data={cartItems}
-              renderItem={renderItem}
-              keyExtractor={item => item.id.toString()}
-              contentContainerStyle={styles.listContent}
-              showsVerticalScrollIndicator={false}
-            />
-
-            <View style={styles.footer}>
-              <View style={styles.totalContainer}>
-                <Text style={styles.totalLabel}>Total Amount</Text>
-                <Text style={styles.totalPrice}>
-                  ${calculateTotal().toFixed(2)}
-                </Text>
-              </View>
-              <TouchableOpacity
-                style={styles.checkoutButton}
-                onPress={handleCheckout}>
-                <Text style={styles.checkoutText}>Secure Checkout</Text>
-                <Image
-                  source={require('@/assets/icons/arrow-right.png')}
-                  style={styles.arrowIcon}
-                />
-              </TouchableOpacity>
-            </View>
-          </>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.screenTitle}>Shopping Cart</Text>
+        {cartItems.length > 0 && (
+          <TouchableOpacity
+            onPress={() => selectAll(!cartItems.every(item => item.isSelected))}
+            style={styles.selectAllButton}>
+            <Text style={styles.selectAllText}>
+              {cartItems.every(item => item.isSelected)
+                ? 'Deselect All'
+                : 'Select All'}
+            </Text>
+          </TouchableOpacity>
         )}
-        <BottomNavigation activeTab={activeTab} onTabPress={setActiveTab} />
       </View>
-    </SafeAreaView>
+
+      {cartItems.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Image
+            source={require('@/assets/images/empty-cart.png')}
+            style={styles.emptyImage}
+          />
+          <Text style={styles.emptyText}>Your cart feels lonely</Text>
+        </View>
+      ) : (
+        <>
+          <FlatList
+            data={cartItems}
+            renderItem={renderItem}
+            keyExtractor={item => item.id.toString()}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+
+          <View style={styles.footer}>
+            <View style={styles.totalContainer}>
+              <Text style={styles.totalLabel}>Total Amount</Text>
+              <Text style={styles.totalPrice}>
+                ${calculateTotal().toLocaleString('en-US')}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.checkoutButton}
+              onPress={handleCheckout}>
+              <Text style={styles.checkoutText}>Secure Checkout</Text>
+              <Image
+                source={require('@/assets/icons/arrow-right.png')}
+                style={styles.arrowIcon}
+              />
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#0A0A0F',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
-  safeArea: {
     flex: 1,
     backgroundColor: '#0A0A0F',
   },
@@ -247,7 +233,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    bottom: 60,
+    bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: '#0A0A0F',
@@ -277,10 +263,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#7B61FF',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
     elevation: 6,
   },
   checkoutText: {

@@ -8,16 +8,22 @@ import {
   PAYMENT_SCREEN,
   ADD_FAVORITE,
   REMOVE_FAVORITE,
+  MAIN_TAB,
 } from '@/constant';
 
 export type NavigationProps = NavigationProp<RootStackParamList>;
 
-export type RootStackParamList = {
+export type MainTabParamList = {
   [HOME_SCREEN]: undefined;
-  [PRODUCT_DETAIL_SCREEN]: {productId: number};
   [CART_SCREEN]: undefined;
   [FAVORITE_SCREEN]: undefined;
   [PROFILE_SCREEN]: undefined;
+  [PAYMENT_SCREEN]: undefined;
+};
+
+export type RootStackParamList = {
+  [MAIN_TAB]: {screen: keyof MainTabParamList};
+  [PRODUCT_DETAIL_SCREEN]: {productId: number};
   [PAYMENT_SCREEN]: undefined;
 };
 

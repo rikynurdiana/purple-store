@@ -3,21 +3,18 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
   Image,
-  StatusBar,
   Alert,
-  Platform,
 } from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {useCart} from '@/context/CartContext';
-import {CART_SCREEN, PAYMENT_SCREEN} from '@/constant';
-import type {RootStackParamList} from '@/types';
+import {MAIN_TAB, CART_SCREEN} from '@/constant';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '@/types';
 
 type PaymentScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, typeof PAYMENT_SCREEN>;
+  navigation: StackNavigationProp<RootStackParamList, typeof MAIN_TAB>;
 };
 
 function PaymentScreen({navigation}: PaymentScreenProps) {
@@ -59,7 +56,7 @@ function PaymentScreen({navigation}: PaymentScreenProps) {
 
     Alert.alert(
       'Confirm Payment',
-      `Total payment: $${total.toFixed(2)}`,
+      `Total payment: $${total.toLocaleString('en-US')}`,
       [
         {
           text: 'Cancel',
@@ -70,7 +67,9 @@ function PaymentScreen({navigation}: PaymentScreenProps) {
           onPress: () => {
             Alert.alert('Success', 'Payment processed successfully!');
             removeSelectedItems();
-            navigation.navigate(CART_SCREEN);
+            navigation.navigate(MAIN_TAB, {
+              screen: CART_SCREEN,
+            });
           },
         },
       ],
@@ -79,9 +78,8 @@ function PaymentScreen({navigation}: PaymentScreenProps) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
-      <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView style={styles.containerScroll}>
         <Text style={styles.title}>Payment Details</Text>
 
         <View style={styles.section}>
@@ -97,11 +95,11 @@ function PaymentScreen({navigation}: PaymentScreenProps) {
               <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.title}</Text>
                 <Text style={styles.itemPrice}>
-                  ${item.price} x {item.quantity}
+                  ${item.price.toLocaleString('en-US')} x {item.quantity}
                 </Text>
               </View>
               <Text style={styles.itemTotal}>
-                ${(item.price * item.quantity).toFixed(2)}
+                ${(item.price * item.quantity).toLocaleString('en-US')}
               </Text>
             </View>
           ))}
@@ -127,19 +125,27 @@ function PaymentScreen({navigation}: PaymentScreenProps) {
           <Text style={styles.sectionTitle}>Order Summary</Text>
           <View style={styles.summaryItem}>
             <Text style={styles.summaryLabel}>Subtotal</Text>
-            <Text style={styles.summaryValue}>${subtotal.toFixed(2)}</Text>
+            <Text style={styles.summaryValue}>
+              ${subtotal.toLocaleString('en-US')}
+            </Text>
           </View>
           <View style={styles.summaryItem}>
             <Text style={styles.summaryLabel}>Tax (10%)</Text>
-            <Text style={styles.summaryValue}>${tax.toFixed(2)}</Text>
+            <Text style={styles.summaryValue}>
+              ${tax.toLocaleString('en-US')}
+            </Text>
           </View>
           <View style={styles.summaryItem}>
             <Text style={styles.summaryLabel}>Shipping</Text>
-            <Text style={styles.summaryValue}>${shipping.toFixed(2)}</Text>
+            <Text style={styles.summaryValue}>
+              ${shipping.toLocaleString('en-US')}
+            </Text>
           </View>
           <View style={[styles.summaryItem, styles.totalItem]}>
             <Text style={styles.totalLabel}>Total</Text>
-            <Text style={styles.totalValue}>${total.toFixed(2)}</Text>
+            <Text style={styles.totalValue}>
+              ${total.toLocaleString('en-US')}
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -149,18 +155,16 @@ function PaymentScreen({navigation}: PaymentScreenProps) {
           <Text style={styles.payButtonText}>Pay Now</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#0A0A0F',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
   container: {
     flex: 1,
+    backgroundColor: '#0A0A0F',
+  },
+  containerScroll: {
     padding: 16,
   },
   title: {

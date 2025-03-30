@@ -4,6 +4,7 @@ export const CART_SCREEN = 'CartScreen';
 export const FAVORITE_SCREEN = 'FavoriteScreen';
 export const PROFILE_SCREEN = 'ProfileScreen';
 export const PAYMENT_SCREEN = 'PaymentScreen';
+export const MAIN_TAB = 'MainTabs';
 
 export type TAB_TYPE =
   | typeof HOME_SCREEN

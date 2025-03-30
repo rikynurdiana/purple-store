@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo} from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Linking,
-  SafeAreaView,
-  StatusBar,
-  Platform,
   ImageBackground,
 } from 'react-native';
-import BottomNavigation from '@/components/navigation/BottomNavigation';
-import {PROFILE_SCREEN} from '@/constant';
 
 const InfoItem = ({label, value}: {label: string; value: string}) => (
   <View style={styles.infoItem}>
@@ -23,7 +18,6 @@ const InfoItem = ({label, value}: {label: string; value: string}) => (
 );
 
 function ProfileScreen() {
-  const [activeTab, setActiveTab] = useState(PROFILE_SCREEN);
   const userProfile = {
     name: 'Riky Nurdiana',
     email: 'nurdiana.riky@gmail.com',
@@ -54,91 +48,81 @@ function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
-      <ScrollView style={styles.container}>
-        <ImageBackground
-          source={require('@/assets/images/bg-img.png')}
-          style={styles.backgroundImage}
-          imageStyle={styles.backgroundImageStyle}>
-          <View style={styles.header}>
-            <Image source={userProfile.avatar} style={styles.avatar} />
-            <Text style={styles.name}>{userProfile.name}</Text>
-            <Text style={styles.bio}>{userProfile.bio}</Text>
-          </View>
-        </ImageBackground>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Contact Information</Text>
-          <InfoItem label="Email" value={userProfile.email} />
-          <InfoItem label="Phone" value={userProfile.phone} />
-          <InfoItem label="Address" value={userProfile.address} />
+    <ScrollView style={styles.container}>
+      <ImageBackground
+        source={require('@/assets/images/bg-img.png')}
+        style={styles.backgroundImage}
+        imageStyle={styles.backgroundImageStyle}>
+        <View style={styles.header}>
+          <Image source={userProfile.avatar} style={styles.avatar} />
+          <Text style={styles.name}>{userProfile.name}</Text>
+          <Text style={styles.bio}>{userProfile.bio}</Text>
         </View>
+      </ImageBackground>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Social Links</Text>
-          <TouchableOpacity onPress={() => handleLink(userProfile.github)}>
-            <View style={styles.socialLink}>
-              <Image
-                source={require('@/assets/icons/github.png')}
-                style={styles.socialIcon}
-              />
-              <Text style={styles.socialText}>GitHub Profile</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Contact Information</Text>
+        <InfoItem label="Email" value={userProfile.email} />
+        <InfoItem label="Phone" value={userProfile.phone} />
+        <InfoItem label="Address" value={userProfile.address} />
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Social Links</Text>
+        <TouchableOpacity onPress={() => handleLink(userProfile.github)}>
+          <View style={styles.socialLink}>
+            <Image
+              source={require('@/assets/icons/github.png')}
+              style={styles.socialIcon}
+            />
+            <Text style={styles.socialText}>GitHub Profile</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleLink(userProfile.linkedin)}>
+          <View style={styles.socialLink}>
+            <Image
+              source={require('@/assets/icons/linkedin.png')}
+              style={styles.socialIcon}
+            />
+            <Text style={styles.socialText}>LinkedIn Profile</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Additional Information</Text>
+        <InfoItem label="Language" value={userProfile.language} />
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Skills</Text>
+        <View style={styles.tagContainer}>
+          {userProfile.skills.map((skill, index) => (
+            <View key={index} style={styles.tag}>
+              <Text style={styles.tagText}>{skill}</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleLink(userProfile.linkedin)}>
-            <View style={styles.socialLink}>
-              <Image
-                source={require('@/assets/icons/linkedin.png')}
-                style={styles.socialIcon}
-              />
-              <Text style={styles.socialText}>LinkedIn Profile</Text>
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Interests</Text>
+        <View style={styles.tagContainer}>
+          {userProfile.interests.map((interest, index) => (
+            <View key={index} style={styles.tag}>
+              <Text style={styles.tagText}>{interest}</Text>
             </View>
-          </TouchableOpacity>
+          ))}
         </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Additional Information</Text>
-          <InfoItem label="Language" value={userProfile.language} />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Skills</Text>
-          <View style={styles.tagContainer}>
-            {userProfile.skills.map((skill, index) => (
-              <View key={index} style={styles.tag}>
-                <Text style={styles.tagText}>{skill}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Interests</Text>
-          <View style={styles.tagContainer}>
-            {userProfile.interests.map((interest, index) => (
-              <View key={index} style={styles.tag}>
-                <Text style={styles.tagText}>{interest}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-      </ScrollView>
-      <BottomNavigation activeTab={activeTab} onTabPress={setActiveTab} />
-    </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#0A0A0F',
-  },
   container: {
     flex: 1,
     backgroundColor: '#0A0A0F',
-    marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-    marginBottom: 50,
   },
   header: {
     alignItems: 'center',

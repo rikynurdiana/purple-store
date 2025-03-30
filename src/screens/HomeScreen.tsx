@@ -2,28 +2,22 @@ import React, {useState, useCallback, useRef, useEffect, memo} from 'react';
 import {
   View,
   StyleSheet,
-  StatusBar,
   FlatList,
-  SafeAreaView,
-  Platform,
   Image,
   ActivityIndicator,
   ImageBackground,
   Text,
 } from 'react-native';
 import ProductCard from '@/components/common/ProductCard';
-import BottomNavigation from '@/components/navigation/BottomNavigation';
 import Categories from '@/components/home/Categories';
 import SearchBar from '@/components/home/SearchBar';
 import ImageSlide from '@/components/common/ImageSlide';
 import TopCategory from '@/components/home/TopCategory';
 import useDebounce from '@/utils/useDebounce';
-import {HOME_SCREEN, HOME_SLIDER} from '@/constant';
+import {HOME_SLIDER} from '@/constant';
 import type {Category, FormattedProduct, Product} from '@/types';
 
 function HomeScreen() {
-  const [activeTab, setActiveTab] = useState(HOME_SCREEN);
-
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [page, setPage] = useState(1);
@@ -194,88 +188,82 @@ function HomeScreen() {
   }, [debouncedSearch, handleSearch]);
 
   return (
-    <>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
-      <SafeAreaView style={styles.container}>
-        <View style={styles.safeArea}>
-          <View style={styles.stickyHeader}>
-            <View style={styles.headerContent}>
-              <View style={styles.header}>
-                <SearchBar
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                  setSelectedCategory={setSelectedCategory}
+    <View style={styles.container}>
+      <View style={styles.stickyHeader}>
+        <View style={styles.headerContent}>
+          <View style={styles.header}>
+            <SearchBar
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              setSelectedCategory={setSelectedCategory}
+            />
+            <View style={styles.categoriesWrapper}>
+              {categories.length > 0 ? (
+                <Categories
+                  categories={categories.map(cat => cat.name)}
+                  selectedCategory={selectedCategory}
+                  onSelectCategory={handleCategoryChange}
                 />
-                <View style={styles.categoriesWrapper}>
-                  {categories.length > 0 ? (
-                    <Categories
-                      categories={categories.map(cat => cat.name)}
-                      selectedCategory={selectedCategory}
-                      onSelectCategory={handleCategoryChange}
-                    />
-                  ) : (
-                    <ActivityIndicator size="large" color="#6200EE" />
-                  )}
-                </View>
-              </View>
+              ) : (
+                <ActivityIndicator size="large" color="#6200EE" />
+              )}
             </View>
           </View>
-
-          <FlatList
-            ref={scrollRef}
-            data={products}
-            ListHeaderComponent={
-              <>
-                <View style={styles.headerSpacer} />
-                <ImageBackground
-                  source={require('@/assets/images/bg-img.png')}
-                  style={styles.backgroundImage}
-                  imageStyle={styles.backgroundImageStyle}>
-                  <ImageSlide images={HOME_SLIDER} />
-                  <TopCategory
-                    handleCategoryChange={handleCategoryChange}
-                    categories={categories}
-                  />
-                </ImageBackground>
-                <View style={styles.bottomOverlay}>
-                  <View ref={productListRef} style={styles.productGrid}>
-                    {products.map(item => (
-                      <View key={item.id} style={styles.productContainer}>
-                        <ProductCard
-                          id={item.id}
-                          name={item.name}
-                          price={item.price}
-                          discount={item.discount}
-                          rating={item.rating}
-                          image={item.image}
-                        />
-                      </View>
-                    ))}
-
-                    {emptyProducts && (
-                      <View style={styles.emptyContainer}>
-                        <Image
-                          source={require('@/assets/images/no-results.png')}
-                          style={styles.emptyImage}
-                        />
-                        <Text style={styles.emptyText}>
-                          the product not available yet
-                        </Text>
-                      </View>
-                    )}
-                  </View>
-                </View>
-              </>
-            }
-            renderItem={null}
-            ListFooterComponent={renderFooter}
-            onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.5}
-          />
-          <BottomNavigation activeTab={activeTab} onTabPress={setActiveTab} />
         </View>
-      </SafeAreaView>
-    </>
+      </View>
+
+      <FlatList
+        ref={scrollRef}
+        data={products}
+        ListHeaderComponent={
+          <>
+            <View style={styles.headerSpacer} />
+            <ImageBackground
+              source={require('@/assets/images/bg-img.png')}
+              style={styles.backgroundImage}
+              imageStyle={styles.backgroundImageStyle}>
+              <ImageSlide images={HOME_SLIDER} />
+              <TopCategory
+                handleCategoryChange={handleCategoryChange}
+                categories={categories}
+              />
+            </ImageBackground>
+            <View style={styles.bottomOverlay}>
+              <View ref={productListRef} style={styles.productGrid}>
+                {products.map(item => (
+                  <View key={item.id} style={styles.productContainer}>
+                    <ProductCard
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                      discount={item.discount}
+                      rating={item.rating}
+                      image={item.image}
+                    />
+                  </View>
+                ))}
+
+                {emptyProducts && (
+                  <View style={styles.emptyContainer}>
+                    <Image
+                      source={require('@/assets/images/no-results.png')}
+                      style={styles.emptyImage}
+                    />
+                    <Text style={styles.emptyText}>
+                      the product not available yet
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          </>
+        }
+        renderItem={null}
+        ListFooterComponent={renderFooter}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+      />
+    </View>
   );
 }
 
@@ -284,13 +272,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0A0A0F',
   },
-  safeArea: {
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
   stickyHeader: {
     position: 'absolute',
-    top: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     left: 0,
     right: 0,
     zIndex: 1000,

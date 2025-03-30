@@ -53,7 +53,9 @@ function DetailProduct({
         </View>
 
         <View style={styles.priceSection}>
-          <Text style={styles.price}>${product.price.toFixed(2)}</Text>
+          <Text style={styles.price}>
+            ${product.price.toLocaleString('en-US')}
+          </Text>
           {Math.round(product.discountPercentage) > 0 && (
             <View style={styles.discountBadge}>
               <Text style={styles.discountText}>
