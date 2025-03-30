@@ -7,22 +7,19 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
-  StatusBar,
-  SafeAreaView,
-  Platform,
   Button,
 } from 'react-native';
 import {RouteProp} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {useCart} from '@/context/CartContext';
 import {useFavorite} from '@/context/FavoriteContext';
 import DetailProdcut from '@/components/detail-product/DetailProduct';
-import {CART_SCREEN, PRODUCT_DETAIL_SCREEN} from '@/constant';
-import type {RootStackParamList, ProductDetail} from '@/types';
+import {CART_SCREEN, MAIN_TAB, PRODUCT_DETAIL_SCREEN} from '@/constant';
+import type {ProductDetail, RootStackParamList} from '@/types';
 
 type ProductDetailScreenProps = {
   route: RouteProp<RootStackParamList, typeof PRODUCT_DETAIL_SCREEN>;
-  navigation: NativeStackNavigationProp<
+  navigation: StackNavigationProp<
     RootStackParamList,
     typeof PRODUCT_DETAIL_SCREEN
   >;
@@ -84,66 +81,62 @@ function ProductDetailScreen({route, navigation}: ProductDetailScreenProps) {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0F" />
-      <View style={styles.container}>
-        <ScrollView>
-          <DetailProdcut
-            product={product}
-            isFavorite={isFavorite}
-            setIsFavorite={setIsFavorite}
-          />
-        </ScrollView>
+    <View style={styles.container}>
+      <ScrollView>
+        <DetailProdcut
+          product={product}
+          isFavorite={isFavorite}
+          setIsFavorite={setIsFavorite}
+        />
+      </ScrollView>
 
-        <View style={styles.bottomBar}>
-          <TouchableOpacity
-            style={styles.cartButton}
-            onPress={() => navigation.goBack()}>
-            <Image
-              source={require('@/assets/icons/arrow-left.png')}
-              style={styles.tabIcon}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.addToCartButton}
-            onPress={() =>
-              product &&
-              addToCart({
-                id: product.id,
-                title: product.title,
-                price: product.price,
-                thumbnail: product.thumbnail,
-              })
-            }>
-            <Text style={styles.addToCartText}>
-              {cartItems.find(item => item.id === product?.id)
-                ? `Already in Cart (${
-                    cartItems.find(item => item.id === product?.id)?.quantity
-                  })`
-                : 'Add to Cart'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cartButton}
-            onPress={() => navigation.navigate(CART_SCREEN)}>
-            <Image
-              source={require('@/assets/icons/cart.png')}
-              style={styles.tabIcon}
-            />
-          </TouchableOpacity>
-        </View>
+      <View style={styles.bottomBar}>
+        <TouchableOpacity
+          style={styles.cartButton}
+          onPress={() => navigation.goBack()}>
+          <Image
+            source={require('@/assets/icons/arrow-left.png')}
+            style={styles.tabIcon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.addToCartButton}
+          onPress={() =>
+            product &&
+            addToCart({
+              id: product.id,
+              title: product.title,
+              price: product.price,
+              thumbnail: product.thumbnail,
+            })
+          }>
+          <Text style={styles.addToCartText}>
+            {cartItems.find(item => item.id === product?.id)
+              ? `Already in Cart (${
+                  cartItems.find(item => item.id === product?.id)?.quantity
+                })`
+              : 'Add to Cart'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cartButton}
+          onPress={() =>
+            navigation.navigate(MAIN_TAB, {
+              screen: CART_SCREEN,
+            })
+          }>
+          <Image
+            source={require('@/assets/icons/cart.png')}
+            style={styles.tabIcon}
+          />
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#0A0A0F',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
-  safeArea: {
     flex: 1,
     backgroundColor: '#0A0A0F',
   },
@@ -170,7 +163,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#0A0A0F',
     paddingHorizontal: 16,
     paddingTop: 12,
-    paddingBottom: Platform.OS === 'ios' ? 24 : 16,
     borderTopWidth: 1,
     borderTopColor: '#1E1E1E',
     flexDirection: 'row',
